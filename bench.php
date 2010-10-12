@@ -38,7 +38,7 @@ class Bench
         $this->_setTargets($file);
         
         // run siege against the list of targets
-        foreach ($list as $name => $path) {
+        foreach ($this->_targets as $name => $path) {
             $this->_siege($name, $path);
         }
         
