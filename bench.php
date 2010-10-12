@@ -26,7 +26,7 @@ class Bench
     {
         // validation
         if (empty($_SERVER['argv'][1])) {
-            $this->_outln("Please specify a benchmark target file; e.g., './bench/all.csv'.");
+            $this->_outln("Please specify a benchmark target file; e.g., './target/all.csv'.");
             exit(1);
         } else {
             $file = $_SERVER['argv'][1];
@@ -63,7 +63,7 @@ class Bench
         $vars = array_keys(get_class_vars(get_class($this)));
         
         // the ini file with property values
-        $data = parse_ini_file("{$this->_base_dir}/bench.ini");
+        $data = parse_ini_file("{$this->_base_dir}/config.ini");
         
         // don't set these props from ini file
         unset($data['base_dir']);
@@ -86,9 +86,9 @@ class Bench
         passthru("mkdir -p {$this->_log_dir}");
     }
     
-    protected function _setTargets()
+    protected function _setTargets($file)
     {
-        $this->_targets = parse_ini_file($targets);
+        $this->_targets = parse_ini_file($file);
     }
     
     protected function _siege($name, $path)
