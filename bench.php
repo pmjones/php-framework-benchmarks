@@ -102,7 +102,7 @@ class Bench
         passthru($this->_apache_restart);
         
         // what href are we targeting?
-        $href = "http://localhost/framework/$name/$path";
+        $href = "http://localhost/$name/$path";
         
         // prime the cache
         $this->_outln("$name: prime the cache");
