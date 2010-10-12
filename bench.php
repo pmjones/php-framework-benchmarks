@@ -26,7 +26,7 @@ class Bench
     {
         // validation
         if (empty($_SERVER['argv'][1])) {
-            $this->_outln("Please specify a benchmark target file; e.g., './target/all.csv'.");
+            $this->_outln("Please specify a benchmark target file; e.g., './target/all.ini'.");
             exit(1);
         } else {
             $file = $_SERVER['argv'][1];
@@ -35,7 +35,7 @@ class Bench
         // prep work
         $this->_setup();
         $this->_makeLogDir();
-        $this->_setTargets($file);
+        $this->_setTargets(realpath($file));
         
         // run siege against the list of targets
         foreach ($this->_targets as $name => $path) {
@@ -57,7 +57,7 @@ class Bench
     protected function _setup()
     {
         // the directory of this class file
-        $this->_base_dir = __DIRNAME__;
+        $this->_base_dir = __DIR__;
         
         // what properties to load?
         $vars = array_keys(get_class_vars(get_class($this)));
