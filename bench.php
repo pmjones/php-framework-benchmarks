@@ -82,7 +82,7 @@ class Bench
     {
         // store logs broken down by time
         $time = date("Y-m-d\TH:i:s");
-        $this->_log_dir = "{$this->_dir}/log/{$time}";
+        $this->_log_dir = "{$this->_base_dir}/log/{$time}";
         passthru("mkdir -p {$this->_log_dir}");
     }
     
