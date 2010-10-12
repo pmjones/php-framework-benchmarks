@@ -1,1 +1,101 @@
 This project attempts to benchmark the baseline level of responsiveness of various web-application frameworks to discover the overhead involved in using each one.
+
+Benchmarking Server Setup
+=========================
+
+Hardware and Operating System
+-----------------------------
+
+The benchmark is performed on an Amazon EC2 `m1.large` instance. This provides 4 EC2 compute units and 7.5 G of RAM.  The operating system is a stock 64-bit Ubuntu 10.10 image provided by <http://alestic.com/>.
+
+Installation instructions for EC2 are beyond the scope of this project. Once you have an EC2 account at Amazon and the appropriate EC2 shell tools, run a new instance under your own username ...
+
+    ec2-run-instances ami-688c7801 --instance-type=m1.large -k USERNAME
+
+... then SSH into the running instance to continue.
+
+
+Software Installation
+---------------------
+
+After the instance comes online, use apt-get to install the following software:
+
+    # initial updates
+    apt-get update
+    apt-get dist-upgrade
+
+    # apache2 and php
+    apt-get install \
+        apache2 \
+        apache2-threaded-dev \
+        libapache2-mod-php5 \
+        php5-dev \
+        php-pear \
+        php5-curl \
+        php5-gd \
+        php5-gmp \
+        php5-mcrypt \
+        php5-memcache \
+        php5-mhash \
+        php5-mysql \
+        php5-pgsql \
+        php5-sqlite \
+        php5-syck \
+        php5-tidy \
+        php5-xmlrpc \
+        php5-xsl
+
+    # git
+    apt-get install git git-tools
+
+    # siege benchmarking tool
+    apt-get install siege
+
+    # development tools
+    apt-get install gcc make screen
+
+    # APC
+    pecl install apc
+    echo "extension=apc.so" > /etc/php5/conf.d/apc.ini
+
+    # turn off mod_deflate
+    a2dismod deflate
+
+    # check out the project code
+    cd /var/www
+    git clone https://pmjones@github.com/pmjones/Web-Framework-Benchmarks.git
+    
+    # We need to modify the Apache DocumentRoot for the project checkout.
+    # move the DocumentRoot to /var/www/html,
+    # because it's hard to change Symfony once it's set
+    cd /etc/apache2/sites-available/
+    cp default default-orig
+    sed s~/var/www~/var/www/html~ default-orig > default
+
+
+    # Reset permissions and restart the server.
+    # make everything public to remove all chance of permissions errors,
+    # then restart apache
+    chmod -R 777 /var/www/*
+    /etc/init.d/apache2 restart
+    
+    # done!
+
+Running the Benchmarks
+======================
+
+Now you can run the benchmarks against a series of framework targets. At the EC2 command line, issue the following:
+    
+    cd /var/www
+    ./bench.php target/all.ini
+
+(There are other target files as well.)
+
+The script will do the following for each framework target:
+
+- Restart Apache
+- Browse to the framework once to warm up the cache
+- Run `siege` against the framework 5 times for 1 minute each with 10 users
+- Log the results
+
+At the end of the benchmarking, the script will collate the logged siege results and print a report on the framework responsiveness.
