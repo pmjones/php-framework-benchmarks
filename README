@@ -25,9 +25,16 @@ After the instance comes online, use aptitude to install the following software:
     # become root
     sudo -s
     
+    # raise the ulimit for file descriptors.
+    # this helps avoid socket timeouts using siege 2.69
+    echo "ulimit -n 1048576" >> ~/.profile
+    
+    # reload .profile so the ulimit takes effect
+    . ~/.profile
+    
     # initial updates
     aptitude update
-    aptitude dist-upgrade
+    aptitude dist-upgrade -y
 
     # apache2, php, git, siege
     aptitude install \
