@@ -226,8 +226,8 @@ class Bench
         }
         fclose($handle);
         
-        // remove the fields line
-        array_shift($data);
+        // remove the fields line from the list
+        array_shift($list);
         
         // done!
         return $list;
