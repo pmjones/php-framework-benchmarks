@@ -1,0 +1,44 @@
+SECURITY NOTE
+=============
+
+The default system comes with a root `index.php` file.  This is provided for
+first time users, who (of course) need quick feedback that the system is 
+working, and who are likely to have placed the entire system in the document
+root.
+
+This is a highly insecure technique, provided **only** for quick-start
+purposes. Web clients will be able to browse all the files in the system, not
+just the public ones.
+
+Our **very strong recommendation** is that you delete the root `index.php`
+file, and instead, point your web server document root to `system/docroot/`.
+Setting up a virtual host for this is generally best.
+
+
+Writable Directories
+====================
+
+Be sure to make the `sqlite/` and `tmp/` directories fully-accessible to the
+web server process. The easiest (but least-secure) way to do this is to allow
+all users read/write/execute privileges:
+
+{{code: bash
+    chmod -R 777 sqlite
+    chmod -R 777 tmp
+}}
+
+Alternatively, as a more-secure method, you may wish to `chown` or `chgrp`
+those files to the web server process, and set `chmod 750` on them.
+
+
+Troubleshooting
+===============
+
+* If you see "PDOException: SQLSTATE[HY000] [14] unable to open database file"
+  it's probably because the `sqlite/` directory is not writable; be sure to
+  issue `chmod 777 sqlite`.
+
+* If you see session errors right away, it's probably because the
+  `tmp/session/` directory is not writable; be sure to issue
+  `chmod -R 777 tmp`.
+

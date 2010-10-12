@@ -1,0 +1,6 @@
+deny    handle  *       *                               *
+allow   role    bar     Fixture_Solar_App_Example       *
+deny    role    foo     Fixture_Solar_App_Example       *
+allow   handle  gir     Fixture_Solar_App_Example2      *
+allow   handle  gir     Fixture_Solar_App_Example3      read
+allow   handle  +       Fixture_Solar_App_Example4      *

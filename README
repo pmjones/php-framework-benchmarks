@@ -10,81 +10,67 @@ The benchmark is performed on an Amazon EC2 `m1.large` instance. This provides 4
 
 Installation instructions for EC2 are beyond the scope of this project. Once you have an EC2 account at Amazon and the appropriate EC2 shell tools, run a new instance under your own username ...
 
-    ec2-run-instances ami-688c7801 --instance-type=m1.large -k USERNAME
+    ec2-run-instances ami-688c7801 --instance-type=m1.large -k {$USERNAME}
 
 ... then SSH into the running instance to continue.
+
+    ssh -i /path/to/id_rsa-{$USERNAME} ubuntu@{$SUBDOMAIN}.amazonaws.com
 
 
 Software Installation
 ---------------------
 
-After the instance comes online, use apt-get to install the following software:
+After the instance comes online, use aptitude to install the following software:
 
+    # become root
+    sudo -s
+    
     # initial updates
-    apt-get update
-    apt-get dist-upgrade
+    aptitude update
+    aptitude dist-upgrade
 
-    # apache2 and php
-    apt-get install \
-        apache2 \
-        apache2-threaded-dev \
+    # apache2, php, git, siege
+    aptitude install \
+        apache2-mpm-prefork \
         libapache2-mod-php5 \
-        php5-dev \
-        php-pear \
+        php-apc \
+        php5-cli \
         php5-curl \
-        php5-gd \
-        php5-gmp \
+        php5-dev \
         php5-mcrypt \
         php5-memcache \
         php5-mhash \
         php5-mysql \
-        php5-pgsql \
         php5-sqlite \
-        php5-syck \
-        php5-tidy \
         php5-xmlrpc \
-        php5-xsl
-
-    # git
-    apt-get install git git-tools
-
-    # siege benchmarking tool
-    apt-get install siege
-
-    # development tools
-    apt-get install gcc make screen
-
-    # APC
-    pecl install apc
-    echo "extension=apc.so" > /etc/php5/conf.d/apc.ini
-
-    # turn off mod_deflate
-    a2dismod deflate
-
-    # check out the project code
-    cd /var/www
-    git clone https://pmjones@github.com/pmjones/Web-Framework-Benchmarks.git
+        php5-xsl \
+        git-all \
+        siege
     
-    # We need to modify the Apache DocumentRoot for the project checkout.
-    # move the DocumentRoot to /var/www/html,
-    # because it's hard to change Symfony once it's set
+    # replace /var/www with the project checkout
+    rm -rf /var/www
+    git clone git@github.com:pmjones/Web-Framework-Benchmarks.git /var/www
+    
+    # modify the Apache DocumentRoot for the project checkout
     cd /etc/apache2/sites-available/
     cp default default-orig
-    sed s~/var/www~/var/www/html~ default-orig > default
-
-
-    # Reset permissions and restart the server.
+    sed s~/var/www~/var/www/htdocs~ default-orig > default
+    
+    # turn off mod_deflate
+    a2dismod deflate
+    
     # make everything public to remove all chance of permissions errors,
     # then restart apache
-    chmod -R 777 /var/www/*
+    chmod -R 777 /var/www
     /etc/init.d/apache2 restart
     
-    # done!
+Now you can run the benchmarks against a series of framework targets.
+
 
 Running the Benchmarks
 ======================
 
-Now you can run the benchmarks against a series of framework targets. At the EC2 command line, issue the following:
+ At the EC2 command line, issue the following:
     
     cd /var/www
     ./bench.php target/all.ini

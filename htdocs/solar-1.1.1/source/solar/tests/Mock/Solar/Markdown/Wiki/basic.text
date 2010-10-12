@@ -1,0 +1,55 @@
+
+=========
+Home Page
+=========
+
+We want to see how well this translates text.
+
+{{method: methodName
+    @access public
+    @return string
+}}
+
+Especially we want for [[wiki links]] to work, and for <span>HTML</span> 
+to be **properly escaped**.
+
+    <p>this should show up literally</p>
+
+And this should not.
+
+--------------------------------
+Check <span>HTML</span> Escaping
+--------------------------------
+
+Compressed lists:
+
+* compressed list
+* do we get <span>HTML</span> escaping in this list?
+* because we should :-(
+
+Loose lists:
+
+* loose list
+
+* do we get <span>HTML</span> escaping
+  in this list?
+  
+* because we should
+
+Definition lists:
+
+term
+: <span>definition</span>
+
+Block quotes:
+
+> do we get <span>HTML</span> escaping
+> inside block quotes?
+
+
+Tables:
+
+| Header <span>HTML</span> | **Strong**
+| ------------------------ | ----------
+| cell with *em* <span>HTML</span> | no html
+

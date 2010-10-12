@@ -1,0 +1,223 @@
+<?php
+return array (
+  'test_autoinc_primary' => 
+  array (
+    'name' => 'test_autoinc_primary',
+    'type' => 'int',
+    'size' => NULL,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => true,
+    'primary' => true,
+    'autoinc' => true,
+  ),
+  'test_require' => 
+  array (
+    'name' => 'test_require',
+    'type' => 'int',
+    'size' => NULL,
+    'scope' => NULL,
+    'default' => '',
+    'require' => true,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_bool' => 
+  array (
+    'name' => 'test_bool',
+    'type' => 'bool',
+    'size' => NULL,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_char' => 
+  array (
+    'name' => 'test_char',
+    'type' => 'char',
+    'size' => 3,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_varchar' => 
+  array (
+    'name' => 'test_varchar',
+    'type' => 'varchar',
+    'size' => 7,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_smallint' => 
+  array (
+    'name' => 'test_smallint',
+    'type' => 'smallint',
+    'size' => NULL,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_int' => 
+  array (
+    'name' => 'test_int',
+    'type' => 'int',
+    'size' => NULL,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_bigint' => 
+  array (
+    'name' => 'test_bigint',
+    'type' => 'bigint',
+    'size' => NULL,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_numeric_size' => 
+  array (
+    'name' => 'test_numeric_size',
+    'type' => 'numeric',
+    'size' => 7,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_numeric_scope' => 
+  array (
+    'name' => 'test_numeric_scope',
+    'type' => 'numeric',
+    'size' => 7,
+    'scope' => 3,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_float' => 
+  array (
+    'name' => 'test_float',
+    'type' => 'float',
+    'size' => NULL,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_clob' => 
+  array (
+    'name' => 'test_clob',
+    'type' => 'clob',
+    'size' => NULL,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_date' => 
+  array (
+    'name' => 'test_date',
+    'type' => 'date',
+    'size' => NULL,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_time' => 
+  array (
+    'name' => 'test_time',
+    'type' => 'time',
+    'size' => NULL,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_timestamp' => 
+  array (
+    'name' => 'test_timestamp',
+    'type' => 'timestamp',
+    'size' => NULL,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_default_null' => 
+  array (
+    'name' => 'test_default_null',
+    'type' => 'char',
+    'size' => 3,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_default_string' => 
+  array (
+    'name' => 'test_default_string',
+    'type' => 'varchar',
+    'size' => 7,
+    'scope' => NULL,
+    'default' => 'literal',
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_default_integer' => 
+  array (
+    'name' => 'test_default_integer',
+    'type' => 'int',
+    'size' => NULL,
+    'scope' => NULL,
+    'default' => '7',
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_default_numeric' => 
+  array (
+    'name' => 'test_default_numeric',
+    'type' => 'numeric',
+    'size' => 7,
+    'scope' => 3,
+    'default' => '1234.567',
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+  'test_default_ignore' => 
+  array (
+    'name' => 'test_default_ignore',
+    'type' => 'int',
+    'size' => NULL,
+    'scope' => NULL,
+    'default' => NULL,
+    'require' => false,
+    'primary' => false,
+    'autoinc' => false,
+  ),
+);

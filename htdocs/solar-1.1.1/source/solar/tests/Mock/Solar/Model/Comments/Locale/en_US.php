@@ -1,0 +1,16 @@
+<?php return array (
+  'LABEL_ID' => 'Id',
+  'LABEL_CREATED' => 'Created',
+  'LABEL_UPDATED' => 'Updated',
+  'LABEL_NODE_ID' => 'Node Id',
+  'LABEL_EMAIL' => 'Email',
+  'LABEL_URI' => 'Uri',
+  'LABEL_BODY' => 'Body',
+  'DESCR_ID' => '',
+  'DESCR_CREATED' => '',
+  'DESCR_UPDATED' => '',
+  'DESCR_NODE_ID' => '',
+  'DESCR_EMAIL' => '',
+  'DESCR_URI' => '',
+  'DESCR_BODY' => '',
+);

@@ -1,0 +1,18 @@
+<IfModule rewrite_module>
+    # turn on rewriting
+    RewriteEngine On
+
+    # hint the Solar_Uri_Action class as to the base path
+    SetEnv SOLAR_URI_ACTION_PATH /
+    
+    # turn empty reqests into requests for "index.html",
+    # keeping the query string intact
+    RewriteRule ^$ index.html [QSA]
+
+    # for all files not found in the file system,
+    # reroute to "index.php" bootstrap script,
+    # keeping the query string intact.
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
