@@ -132,8 +132,9 @@ class Bench
             'time'              => '60s',
             'benchmark'         => 'true',
             'spinner'           => 'false',
+            'failures'          => '1048576',
         );
-    
+        
         // make sure we have base vars for everything
         $vars = array_merge($base, $vars);
         

@@ -28,8 +28,6 @@ After the instance comes online, use aptitude to install the following software:
     # raise the ulimit for file descriptors.
     # this helps avoid socket timeouts using siege 2.69
     echo "ulimit -n 1048576" >> ~/.profile
-    
-    # reload .profile so the ulimit takes effect
     . ~/.profile
     
     # initial updates
@@ -43,14 +41,7 @@ After the instance comes online, use aptitude to install the following software:
         php-apc \
         php5-cli \
         php5-common \
-        php5-curl \
         php5-dev \
-        php5-mcrypt \
-        php5-memcache \
-        php5-mysql \
-        php5-sqlite \
-        php5-xmlrpc \
-        php5-xsl \
         git-all \
         siege
     
