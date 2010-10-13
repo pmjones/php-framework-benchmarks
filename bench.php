@@ -22,6 +22,12 @@ class Bench
     
     protected $_targets;
     
+    protected $_concurrent;
+    
+    protected $_time;
+    
+    protected $_failures;
+    
     public function exec()
     {
         // validation
@@ -128,11 +134,11 @@ class Bench
             'protocol'          => 'HTTP/1.0',
             'chunked'           => 'true',
             'connection'        => 'close',
-            'concurrent'        => '10',
-            'time'              => '60s',
+            'concurrent'        => $this->_concurrent,
+            'time'              => $this->_time,
             'benchmark'         => 'true',
             'spinner'           => 'false',
-            'failures'          => '1048576',
+            'failures'          => $this->_failures,
         );
         
         // make sure we have base vars for everything
