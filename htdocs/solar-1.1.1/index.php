@@ -1,4 +1,6 @@
 <?php
+session_id('foobar');
+
 /**
  * 
  * This bootstrap file is intended only for first-time users who have dumped
