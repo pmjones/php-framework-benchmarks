@@ -22,8 +22,7 @@ class BenchHttpLoad extends BenchAbstract
     protected function _fetchReqSec($log_file)
     {
         $lines = file($log_file);
-        $val = (float) $lines[2];
-        $report[$name][(string) $i] = sprintf($format, $val);
+        return (float) $lines[2];
     }
 }
 
