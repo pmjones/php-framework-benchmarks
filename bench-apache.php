@@ -3,6 +3,8 @@
 require __DIR__ . '/bench-abstract.php';
 class BenchApache extends BenchAbstract
 {
+    protected $_ab;
+    
     protected function _runOnePass($href, $log_file)
     {
         $cmd = "{$this->_ab} "
