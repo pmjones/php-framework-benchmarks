@@ -1,17 +1,3 @@
-NEW TOOL: 
-
-http://www.acme.com/software/http_load/
-
-http://ilia.ws/files/zend_performance.pdf
-
-http://mikewest.org/2007/01/benchmarking-your-site-with-http_load
-
-http://www.codediesel.com/tools/benchmarking-server-performance-with-http_load/
-
-
-wget http://www.acme.com/software/http_load/http_load-12mar2006.tar.gz
-untar; make; make install
-
 This project attempts to benchmark the baseline level of responsiveness of various web-application frameworks to discover the overhead involved in using each one.
 
 Benchmarking Server Setup
@@ -89,24 +75,13 @@ After the instance comes online, use aptitude to install the following software:
     
 Now you can run the benchmarks against a series of framework targets.
 
-* * *
-
-echo "apc.stat=0" >> /etc/php5/conf.d/apc.ini
-echo "apc.include_once_override=1" >> /etc/php5/conf.d/apc.ini
-echo "apc.max_file_size=4M" >> /etc/php5/conf.d/apc.ini
-echo "apc.mmap_file_mask=/tmp/apc.XXXXXX" >> /etc/php5/conf.d/apc.ini
-echo "apc.shm_size=128" >> /etc/php5/conf.d/apc.ini
-echo "apc.ttl=3600" >> /etc/php5/conf.d/apc.ini
-
-* * *
-
 Running the Benchmarks
 ======================
 
  At the EC2 command line, issue the following:
     
     cd /var/www
-    ./bench.php target/all.ini
+    ./bench-httpload.php target/all.ini
 
 (There are other target files as well.)
 
@@ -114,7 +89,7 @@ The script will do the following for each framework target:
 
 - Restart Apache
 - Browse to the framework once to warm up the cache
-- Run `siege` against the framework 5 times for 1 minute each with 10 users
+- Benchmark the the framework 5 times for 1 minute each with 10 users
 - Log the results
 
-At the end of the benchmarking, the script will collate the logged siege results and print a report on the framework responsiveness.
+At the end of the benchmarking, the script will collate the logged benchmark results and print a report on the framework responsiveness.
