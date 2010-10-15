@@ -116,18 +116,12 @@ class Bench
         
         // bench runs
         for ($i = 1; $i <= 5; $i++) {
-            
             $this->_outln("$name: pass $i");
-            
             $cmd = "{$this->_http_load} "
                  . "-parallel {$this->_concurrent} "
                  . "-seconds {$this->_time} "
                  . "{$this->_url_file} > {$this->_log_dir}/$name/$i.log";
-            
             passthru($cmd);
-            
-            echo "\n";
-            
         }
     }
     
