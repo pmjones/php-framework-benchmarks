@@ -1,3 +1,17 @@
+NEW TOOL: 
+
+http://www.acme.com/software/http_load/
+
+http://ilia.ws/files/zend_performance.pdf
+
+http://mikewest.org/2007/01/benchmarking-your-site-with-http_load
+
+http://www.codediesel.com/tools/benchmarking-server-performance-with-http_load/
+
+
+wget http://www.acme.com/software/http_load/http_load-12mar2006.tar.gz
+untar; make; make install
+
 This project attempts to benchmark the baseline level of responsiveness of various web-application frameworks to discover the overhead involved in using each one.
 
 Benchmarking Server Setup
@@ -62,8 +76,29 @@ After the instance comes online, use aptitude to install the following software:
     chmod -R 777 /var/www
     /etc/init.d/apache2 restart
     
+    # install http_load
+    cd /root
+    wget http://www.acme.com/software/http_load/http_load-12mar2006.tar.gz
+    tar -zxvf http_load-12mar2006.tar.gz
+    cd http_load-12mar2006
+    make
+    make install
+    
+    # switch to /var/www and done
+    cd /var/www
+    
 Now you can run the benchmarks against a series of framework targets.
 
+* * *
+
+echo "apc.stat=0" >> /etc/php5/conf.d/apc.ini
+echo "apc.include_once_override=1" >> /etc/php5/conf.d/apc.ini
+echo "apc.max_file_size=4M" >> /etc/php5/conf.d/apc.ini
+echo "apc.mmap_file_mask=/tmp/apc.XXXXXX" >> /etc/php5/conf.d/apc.ini
+echo "apc.shm_size=128" >> /etc/php5/conf.d/apc.ini
+echo "apc.ttl=3600" >> /etc/php5/conf.d/apc.ini
+
+* * *
 
 Running the Benchmarks
 ======================
