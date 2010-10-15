@@ -121,7 +121,6 @@ abstract class BenchAbstract
             
             // retain the req/sec data
             $this->_req_sec[$name][$i] = $req_sec;
-            
         }
     }
     
