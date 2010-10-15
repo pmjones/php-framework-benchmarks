@@ -119,8 +119,9 @@ class Bench
             $cmd = "{$this->_http_load} "
                  . "-parallel {$this->_concurrent} "
                  . "-seconds {$this->_time} "
-                 . "$href > {$this->_log_dir}/$name-$i.log";
-                 
+                 . "{$this->_url_file} > {$this->_log_dir}/$name-$i.log";
+            
+            echo $cmd . PHP_EOL;
             passthru($cmd);
             
             echo "\n";
