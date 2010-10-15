@@ -23,14 +23,19 @@ abstract class BenchAbstract
         if (empty($_SERVER['argv'][1])) {
             $this->_outln("Please specify a benchmark target file; e.g., './target/all.ini'.");
             exit(1);
+        } else {
+            $targets_file = $_SERVER['argv'][1];
         }
         
-        // is it there?
-        $targets_file = $_SERVER['argv'][1];
-        if (! file_exists($target_file) || ! is_readable($targets_file)) {
-            $this->_outln("Benchmark target file '$target_file' does not exist or is not readable.");
+        // does the targets file exist?
+        $realpath = realpath($targets_file);
+        if (! $realpath || ! file_exists($realpath) || ! is_readable($realpath)) {
+            $this->_outln("Benchmark target file '$targets_file' does not exist or is not readable.");
             exit(1);
         }
+        
+        // retain real path to targets file
+        $targets_file = $realpath;
         
         // current directory
         $base_dir = __DIR__;
