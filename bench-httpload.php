@@ -103,6 +103,9 @@ class Bench
         // write the url_file for this framework
         $this->_writeUrlFile($href);
         
+        // make a log dir for this run
+        @mkdir("{$this->_log_dir}/$name", 0777, true);
+        
         // restart the server for a fresh environment
         passthru($this->_apache_restart);
         
