@@ -135,7 +135,7 @@ class Bench
             'chunked'           => 'true',
             'connection'        => 'close',
             'concurrent'        => $this->_concurrent,
-            'time'              => $this->_time,
+            'time'              => "{$this->_time}s",
             'benchmark'         => 'true',
             'spinner'           => 'false',
             'failures'          => $this->_failures,
