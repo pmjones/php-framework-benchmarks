@@ -76,7 +76,7 @@ class Bench
         // set all the other properties, if they are available
         foreach ($vars as $var) {
             $key = substr($var, 1);
-            if (array_key_exists($key, $data) && property_exists($this, $var)) {
+            if (array_key_exists($key, $data)) {
                 $this->$var = $data[$key];
             }
         }
