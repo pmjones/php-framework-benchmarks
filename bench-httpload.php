@@ -1,9 +1,6 @@
 #!/usr/bin/env php
 <?php
 require __DIR__ . '/bench-abstract.php';
-$bench = new BenchHttpLoad;
-$bench->exec();
-
 class BenchHttpLoad extends BenchAbstract
 {
     protected $_http_load;
@@ -29,3 +26,6 @@ class BenchHttpLoad extends BenchAbstract
         $report[$name][(string) $i] = sprintf($format, $val);
     }
 }
+
+$bench = new BenchHttpLoad;
+$bench->exec();

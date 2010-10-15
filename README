@@ -35,7 +35,7 @@ After the instance comes online, use aptitude to install the following software:
     aptitude dist-upgrade -y
 
     # apache2, php, git, siege
-    aptitude install \
+    aptitude install -y \
         apache2-mpm-prefork \
         libapache2-mod-php5 \
         php-apc \

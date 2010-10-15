@@ -1,9 +1,6 @@
 #!/usr/bin/env php
 <?php
 require __DIR__ . '/bench-abstract.php';
-$bench = new BenchSiege;
-$bench->exec();
-
 class BenchSiege extends BenchAbstract
 {
     protected $_siege;
@@ -50,3 +47,6 @@ class BenchSiege extends BenchAbstract
         return (float) $data[5];
     }
 }
+
+$bench = new BenchSiege;
+$bench->exec();
