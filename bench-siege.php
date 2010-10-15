@@ -20,7 +20,7 @@ class BenchSiege extends BenchAbstract
             'chunked'           => 'true',
             'connection'        => 'close',
             'concurrent'        => $this->_concurrent,
-            'time'              => "{$this->_time}s",
+            'time'              => "{$this->_seconds}s",
             'benchmark'         => 'true',
             'spinner'           => 'false',
             'failures'          => $this->_siege_failures,
