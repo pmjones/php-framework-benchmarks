@@ -25,11 +25,6 @@ After the instance comes online, use aptitude to install the following software:
     # become root
     sudo -s
     
-    # raise the ulimit for file descriptors.
-    # this helps avoid socket timeouts using siege 2.69
-    echo "ulimit -n 1048576" >> ~/.profile
-    . ~/.profile
-    
     # initial updates
     aptitude update
     aptitude dist-upgrade -y
@@ -79,7 +74,7 @@ Running the Benchmarks
  At the EC2 command line, issue the following:
     
     cd /var/www
-    ./bench-httpload.php target/all.ini
+    ./bench/httpload.php target/all.ini
 
 (There are other bench scripts and target files as well.)
 
