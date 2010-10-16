@@ -45,9 +45,13 @@ After the instance comes online, use aptitude to install the following software:
         git-all \
         siege
     
-    # replace /var/www with the project checkout
-    rm -rf /var/www
-    git clone https://pmjones@github.com/pmjones/Web-Framework-Benchmarks.git /var/www
+    # install http_load
+    cd /root
+    wget http://www.acme.com/software/http_load/http_load-12mar2006.tar.gz
+    tar -zxvf http_load-12mar2006.tar.gz
+    cd http_load-12mar2006
+    make
+    make install
     
     # modify the Apache DocumentRoot for the project checkout
     cd /etc/apache2/sites-available/
@@ -62,16 +66,13 @@ After the instance comes online, use aptitude to install the following software:
     chmod -R 777 /var/www
     /etc/init.d/apache2 restart
     
-    # install http_load
-    cd /root
-    wget http://www.acme.com/software/http_load/http_load-12mar2006.tar.gz
-    tar -zxvf http_load-12mar2006.tar.gz
-    cd http_load-12mar2006
-    make
-    make install
+    # replace /var/www with the project checkout
+    rm -rf /var/www
+    git clone https://pmjones@github.com/pmjones/Web-Framework-Benchmarks.git /var/www
     
-    # switch to /var/www and done
+    # switch to /var/www and open all permissions (e.g. for caches)
     cd /var/www
+    chmod -R 777 htdocs
     
 Now you can run the benchmarks against a series of framework targets.
 
@@ -83,7 +84,7 @@ Running the Benchmarks
     cd /var/www
     ./bench-httpload.php target/all.ini
 
-(There are other target files as well.)
+(There are other bench scripts and target files as well.)
 
 The script will do the following for each framework target:
 

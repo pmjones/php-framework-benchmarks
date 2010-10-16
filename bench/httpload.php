@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
-require __DIR__ . '/bench-abstract.php';
-class BenchHttpLoad extends BenchAbstract
+require dirname(__DIR__) . '/bench.php';
+class BenchHttpLoad extends Bench
 {
     protected $_http_load;
     

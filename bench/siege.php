@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
-require __DIR__ . '/bench-abstract.php';
-class BenchSiege extends BenchAbstract
+require dirname(__DIR__) . '/bench.php';
+class BenchSiege extends Bench
 {
     protected $_siege;
     

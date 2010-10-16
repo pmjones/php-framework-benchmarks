@@ -1,7 +1,7 @@
 <?php
 ini_set('error_reporting', E_ALL|E_STRICT);
 ini_set('display_errors', true);
-abstract class BenchAbstract
+abstract class Bench
 {
     protected $_apache_restart;
     
@@ -41,7 +41,7 @@ abstract class BenchAbstract
         $base_dir = __DIR__;
         
         // the ini file with property values
-        $data = parse_ini_file("{$base_dir}/config.ini");
+        $data = parse_ini_file("{$base_dir}/bench.ini");
         
         // what properties to load?
         $vars = array_keys(get_class_vars(get_class($this)));
