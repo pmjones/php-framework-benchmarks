@@ -1,5 +1,8 @@
 This project attempts to benchmark the baseline level of responsiveness of various web-application frameworks to discover the overhead involved in using each one.
 
+The previous version of this project is at Google Code here: <http://code.google.com/p/web-framework-benchmarks/>. This version supersedes the previous version at Google Code.
+
+
 Benchmarking Server Setup
 =========================
 
