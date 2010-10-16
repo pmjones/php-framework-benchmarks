@@ -61,18 +61,15 @@ After the instance comes online, use aptitude to install the following software:
     # turn off mod_deflate
     a2dismod deflate
     
-    # make everything public to remove all chance of permissions errors,
-    # then restart apache
-    chmod -R 777 /var/www
-    /etc/init.d/apache2 restart
-    
     # replace /var/www with the project checkout
     rm -rf /var/www
     git clone https://pmjones@github.com/pmjones/Web-Framework-Benchmarks.git /var/www
     
-    # switch to /var/www and open all permissions (e.g. for caches)
+    # switch to /var/www and open all permissions (e.g. for caches), and
+    # restart apache
     cd /var/www
     chmod -R 777 htdocs
+    /etc/init.d/apache2 restart
     
 Now you can run the benchmarks against a series of framework targets.
 
