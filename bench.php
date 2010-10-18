@@ -113,13 +113,6 @@ abstract class Bench
     
     protected function _runAllPasses($name, $path)
     {
-        // make a log dir for this target name
-        $log_name = "{$this->_log_dir}/$name";
-        @mkdir($log_name, 0777, true);
-        
-        // restart the server for a fresh environment
-        passthru($this->_apache_restart);
-        
         // make sure the we have a good href for the target name
         if (strpos($name, '://') === false) {
             $href = "http://{$this->_domain}/$name";
@@ -130,6 +123,15 @@ abstract class Bench
         // add a path if one exists
         if ($path) {
             $href .= "/$path";
+        }
+        
+        // make a log dir for the target href
+        $log_name = "{$this->_log_dir}/" . urlencode($href);
+        @mkdir($log_name, 0777, true);
+        
+        // restart the server for a fresh environment
+        if ($this->_apache_restart) {
+            passthru($this->_apache_restart);
         }
         
         // prime the cache
