@@ -9,6 +9,15 @@ class BenchSiege extends Bench
     
     protected $_siege_failures;
     
+    protected function _init()
+    {
+        parent::_init();
+    	if (! file_exists($this->_siege)) {
+    	    $this->_outln("File not found: '{$this->_siege}'.");
+    	    exit(1);
+    	}
+    }
+    
     protected function _runOnePass($href, $log_file)
     {
         // vars for siege config

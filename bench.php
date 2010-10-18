@@ -5,13 +5,19 @@ abstract class Bench
 {
     protected $_apache_restart;
     
+    protected $_compare;
+    
     protected $_concurrent;
     
     protected $_curl;
     
+    protected $_domain;
+    
     protected $_log_dir;
     
-    protected $_req_sec; 
+    protected $_passes; 
+    
+    protected $_req_sec;
     
     protected $_seconds;
     
@@ -55,7 +61,15 @@ abstract class Bench
         }
         
         // read in the targets file
-        $this->_targets = parse_ini_file($targets_file);
+        if (substr($this->_targets, -4) == '.ini') {
+            // a .ini file with "name = path"
+            $this->_targets = parse_ini_file($targets_file);
+        } else {
+            // a non-ini file with one target URI per line
+            $keys = file($targets_file);
+            $vals = array_fill(0, count($keys), null);
+            $this->_targets = array_combine($keys, $vals);
+        }
         
         // make a directory for logs
         $time = date("Y-m-d\TH:i:s");
@@ -73,7 +87,11 @@ abstract class Bench
         
         // run against the list of targets
         foreach ($this->_targets as $name => $path) {
-            $this->_runAllPasses($name, $path);
+            // only run non-blank targets
+            $name = trim($name);
+            if ($name) {
+                $this->_runAllPasses($name, $path);
+            }
         }
         
         // print the report
@@ -83,22 +101,36 @@ abstract class Bench
         exit(0);
     }
     
+    protected function _out($text = null)
+    {
+        echo $text;
+    }
+    
     protected function _outln($text = null)
     {
-        echo $text . PHP_EOL;
+        $this->_out($text . PHP_EOL);
     }
     
     protected function _runAllPasses($name, $path)
     {
-        // make a log dir for this name
+        // make a log dir for this target name
         $log_name = "{$this->_log_dir}/$name";
         @mkdir($log_name, 0777, true);
         
         // restart the server for a fresh environment
         passthru($this->_apache_restart);
         
-        // what href are we targeting?
-        $href = "http://localhost/$name/$path";
+        // make sure the we have a good href for the target name
+        if (strpos($name, '://') === false) {
+            $href = "http://{$this->_domain}/$name";
+        } else {
+            $href = $name;
+        }
+        
+        // add a path if one exists
+        if ($path) {
+            $href .= "/$path";
+        }
         
         // prime the cache
         $this->_outln("$name: prime the cache");
@@ -106,7 +138,7 @@ abstract class Bench
         $this->_outln();
         
         // run the benchmark passes
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= $this->_passes; $i++) {
             
             // where to log the pass?
             $log_file = "{$log_name}/$i.log";
@@ -130,13 +162,22 @@ abstract class Bench
         $report = array();
         
         // keep track of the comparison bench average
-        $cmp = 99999999;
+        $cmp = 9999999999;
         
         // number formatting
         $format = '%8.2f';
         
+        // padding for the framework name column
+        $name_pad = 8;
+        
         // each of the frameworks benched
         foreach ($this->_req_sec as $name => $pass) {
+            
+            // keep a padding for the longest target name
+            $len = strlen($name);
+            if ($len > $name_pad) {
+                $name_pad = $len + 2;
+            }
             
             // output the bench on its own line
             $report[$name] = array('rel' => null, 'avg' => null);
@@ -150,28 +191,41 @@ abstract class Bench
             $avg = array_sum($report[$name]) / (count($report[$name]) - 2); // -2 for rel, avg
             $report[$name]['avg'] = sprintf($format, $avg);
             
-            // if this is the baseline-php report, save the comparison value
-            if ($name == 'baseline-php') {
+            // if this is the comparison benchmark, save the comparison value
+            if ($name == $this->_compare) {
                 $cmp = $avg;
+            }
+            
+            if (strlen($name) > $name_pad) {
+            	$name_pad = strlen($name);
             }
         }
         
-        $fwpad = 24;
-        
         // header line
-        $val = array('     rel', '     avg', '       1', '       2', '       3', '       4', '       5');
-        $line = str_pad('framework', $fwpad) . " | " . implode(" | ", $val);
-        $this->_outln($line);
+        $this->_outln();
+        $this->_out(str_pad('Target', $name_pad));
+        $this->_out(' |      rel');
+        $this->_out(' |      avg');
+        for($i = 1; $i <= $this->_passes; $i++) {
+        	$this->_out(' | ' . str_pad($i, 8, ' ', STR_PAD_LEFT));
+        }
+        $this->_outln();
         
         // separator line
-        $val = array('--------', '--------', '--------', '--------', '--------', '--------', '--------');
-        $line = str_pad('', $fwpad, '-') . " | " . implode(" | ", $val);
-        $this->_outln($line);
+        $this->_out(str_pad('', $name_pad, '-'));
+        for ($i = 1; $i <= $this->_passes + 2; $i++) {
+        	$this->_out(' | --------');
+        }
+        $this->_outln();
         
         // output each data line, figuring %-of-php score as we go
         foreach ($report as $key => $val) {
-            $val['rel'] = sprintf("%8.4f", $val['avg'] / $cmp);
-            $line = str_pad($key, $fwpad) . " | " . implode(" | ", $val);
+            if ($this->_compare) {
+                $val['rel'] = sprintf("%8.4f", $val['avg'] / $cmp);
+            } else {
+                $val['rel'] = '   n/a  ';
+            }
+            $line = str_pad($key, $name_pad) . " | " . implode(" | ", $val);
             $this->_outln($line);
         }
     }

@@ -7,6 +7,15 @@ class BenchHttpLoad extends Bench
     
     protected $_http_load_file;
     
+    protected function _init()
+    {
+        parent::_init();
+    	if (! file_exists($this->_http_load)) {
+    	    $this->_outln("File not found: '{$this->_http_load}'.");
+    	    exit(1);
+    	}
+    }
+    
     protected function _runOnePass($href, $log_file)
     {
         file_put_contents($this->_http_load_file, $href);
