@@ -61,7 +61,7 @@ After the instance comes online, use aptitude to install the following software:
     
     # replace /var/www with the project checkout
     rm -rf /var/www
-    git clone https://pmjones@github.com/pmjones/Web-Framework-Benchmarks.git /var/www
+    git clone https://pmjones@github.com/pmjones/web-framework-benchmarks.git /var/www
     
     # switch to /var/www and open all permissions (e.g. for caches), and
     # restart apache
@@ -70,6 +70,7 @@ After the instance comes online, use aptitude to install the following software:
     /etc/init.d/apache2 restart
     
 Now you can run the benchmarks against a series of framework targets.
+
 
 Running the Benchmarks
 ======================
