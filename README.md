@@ -23,7 +23,7 @@ Installation instructions for EC2 are beyond the scope of this project. Once you
 Software Installation
 ---------------------
 
-After the instance comes online, issue the follow shell commands to install and configure the necessary packages.
+After the instance comes online, issue the following shell commands to install and configure the necessary packages.
 
     # become root
     sudo -s
