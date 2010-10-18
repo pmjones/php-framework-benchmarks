@@ -61,7 +61,7 @@ abstract class Bench
         }
         
         // read in the targets file
-        if (substr($this->_targets, -4) == '.ini') {
+        if (substr($targets_file, -4) == '.ini') {
             // a .ini file with "name = path"
             $this->_targets = parse_ini_file($targets_file);
         } else {
