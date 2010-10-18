@@ -8,10 +8,10 @@ class BenchApache extends Bench
     protected function _init()
     {
         parent::_init();
-    	if (! file_exists($this->_ab)) {
-    	    $this->_outln("File not found: '{$this->_ab}'.");
-    	    exit(1);
-    	}
+        if (! file_exists($this->_ab)) {
+            $this->_outln("File not found: '{$this->_ab}'.");
+            exit(1);
+        }
     }
     
     protected function _runOnePass($href, $log_file)

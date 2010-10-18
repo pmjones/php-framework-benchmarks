@@ -197,7 +197,7 @@ abstract class Bench
             }
             
             if (strlen($name) > $name_pad) {
-            	$name_pad = strlen($name);
+                $name_pad = strlen($name);
             }
         }
         
@@ -207,14 +207,14 @@ abstract class Bench
         $this->_out(' |      rel');
         $this->_out(' |      avg');
         for($i = 1; $i <= $this->_passes; $i++) {
-        	$this->_out(' | ' . str_pad($i, 8, ' ', STR_PAD_LEFT));
+            $this->_out(' | ' . str_pad($i, 8, ' ', STR_PAD_LEFT));
         }
         $this->_outln();
         
         // separator line
         $this->_out(str_pad('', $name_pad, '-'));
         for ($i = 1; $i <= $this->_passes + 2; $i++) {
-        	$this->_out(' | --------');
+            $this->_out(' | --------');
         }
         $this->_outln();
         
