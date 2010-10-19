@@ -1,4 +1,4 @@
-This project attempts to benchmark the baseline level of responsiveness of various web-application frameworks to discover the overhead involved in using each one.
+This project attempts to benchmark the baseline level of responsiveness of various PHP frameworks to discover the overhead involved in using each one.
 
 The previous version of this project is at Google Code here: <http://code.google.com/p/web-framework-benchmarks/>. This version supersedes the previous version at Google Code.
 
@@ -61,7 +61,7 @@ After the instance comes online, issue the following shell commands to install a
     
     # replace /var/www with the project checkout
     rm -rf /var/www
-    git clone https://pmjones@github.com/pmjones/web-framework-benchmarks.git /var/www
+    git clone git://github.com/pmjones/php-framework-benchmarks.git /var/www
     
     # switch to /var/www and open all permissions (e.g. for caches), and
     # restart apache
