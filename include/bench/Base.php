@@ -63,7 +63,7 @@ abstract class Base
         // retain real path to targets file
         $targets_file = $realpath;
         
-        // current directory
+        // root directory
         $base_dir = dirname(dirname(__DIR__));
         
         // the ini file with property values
