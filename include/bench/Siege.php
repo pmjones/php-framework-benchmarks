@@ -56,6 +56,3 @@ class Siege extends Base
         return (float) $data[5];
     }
 }
-
-$bench = new BenchSiege;
-$bench->exec();

@@ -34,6 +34,3 @@ class HttpLoad extends Base
         return (float) $lines[2];
     }
 }
-
-$bench = new BenchHttpLoad;
-$bench->exec();
