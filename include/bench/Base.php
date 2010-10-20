@@ -64,7 +64,7 @@ abstract class Base
         $targets_file = $realpath;
         
         // current directory
-        $base_dir = __DIR__;
+        $base_dir = dirname(dirname(__DIR__));
         
         // the ini file with property values
         $data = parse_ini_file("{$base_dir}/bench.ini");
