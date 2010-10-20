@@ -74,8 +74,8 @@ abstract class Base
         
         // set all available properties
         foreach ($vars as $var) {
-            if (array_key_exists($key, $data)) {
-                $this->$var = $data[$key];
+            if (array_key_exists($var, $data)) {
+                $this->$var = $data[$var];
             }
         }
         
