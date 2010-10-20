@@ -7,7 +7,7 @@ class Ab extends Base
     
     protected function init()
     {
-        parent::_init();
+        parent::init();
         if (! file_exists($this->ab)) {
             $this->outln("File not found: '{$this->ab}'.");
             exit(1);

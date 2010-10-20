@@ -11,7 +11,7 @@ class Siege extends Base
     
     protected function init()
     {
-        parent::_init();
+        parent::init();
         if (! file_exists($this->siege)) {
             $this->outln("File not found: '{$this->siege}'.");
             exit(1);

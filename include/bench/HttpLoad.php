@@ -9,7 +9,7 @@ class HttpLoad extends Base
     
     protected function init()
     {
-        parent::_init();
+        parent::init();
         if (! file_exists($this->http_load)) {
             $this->outln("File not found: '{$this->http_load}'.");
             exit(1);
