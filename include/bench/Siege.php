@@ -1,24 +1,24 @@
-#!/usr/bin/env php
 <?php
-require dirname(__DIR__) . '/bench.php';
-class BenchSiege extends Bench
+namespace bench;
+require __DIR__ . '/Base.php';
+class Siege extends Base
 {
-    protected $_siege;
+    protected $siege;
     
-    protected $_siege_file;
+    protected $siege_file;
     
-    protected $_siege_failures;
+    protected $siege_failures;
     
-    protected function _init()
+    protected function init()
     {
         parent::_init();
-        if (! file_exists($this->_siege)) {
-            $this->_outln("File not found: '{$this->_siege}'.");
+        if (! file_exists($this->siege)) {
+            $this->outln("File not found: '{$this->siege}'.");
             exit(1);
         }
     }
     
-    protected function _runOnePass($href, $log_file)
+    protected function runOnePass($href, $log_file)
     {
         // vars for siege config
         $vars = array (
@@ -28,11 +28,11 @@ class BenchSiege extends Bench
             'protocol'          => 'HTTP/1.0',
             'chunked'           => 'true',
             'connection'        => 'close',
-            'concurrent'        => $this->_concurrent,
-            'time'              => "{$this->_seconds}s",
+            'concurrent'        => $this->concurrent,
+            'time'              => "{$this->seconds}s",
             'benchmark'         => 'true',
             'spinner'           => 'false',
-            'failures'          => $this->_siege_failures,
+            'failures'          => $this->siege_failures,
             'logfile'           => $log_file,
         );
         
@@ -43,13 +43,13 @@ class BenchSiege extends Bench
         }
         
         // write the siegerc file
-        file_put_contents($this->_siege_file, $text);
+        file_put_contents($this->siege_file, $text);
         
         // run siege
-        passthru("{$this->_siege} $href");
+        passthru("{$this->siege} $href");
     }
     
-    protected function _fetchReqSec($log_file)
+    protected function fetchReqSec($log_file)
     {
         $lines = file($log_file);
         $data = explode(',', $lines[1]);

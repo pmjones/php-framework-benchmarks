@@ -1,33 +1,53 @@
 <?php
-ini_set('error_reporting', E_ALL|E_STRICT);
-ini_set('display_errors', true);
-abstract class Bench
+namespace bench;
+abstract class Base
 {
-    protected $_apache_restart;
+    protected $apache_restart;
     
-    protected $_compare;
+    protected $compare;
     
-    protected $_concurrent;
+    protected $concurrent;
     
-    protected $_curl;
+    protected $curl;
     
-    protected $_domain;
+    protected $domain;
     
-    protected $_log_dir;
+    protected $log_dir;
     
-    protected $_passes; 
+    protected $passes; 
     
-    protected $_req_sec;
+    protected $req_sec;
     
-    protected $_seconds;
+    protected $seconds;
     
-    protected $_targets;
+    protected $targets;
     
-    protected function _init()
+    public function exec()
+    {
+        // initialize
+        $this->init();
+        
+        // run against the list of targets
+        foreach ($this->targets as $name => $path) {
+            // only run non-blank targets
+            $name = trim($name);
+            if ($name) {
+                $this->runAllPasses($name, $path);
+            }
+        }
+        
+        // print the report
+        $this->report();
+        
+        // done!
+        exit(0);
+    }
+    
+    protected function init()
     {
         // make sure we have a target file specified
         if (empty($_SERVER['argv'][1])) {
-            $this->_outln("Please specify a benchmark target file; e.g., './target/all.ini'.");
+            $this->outln("Please specify a benchmark target file; e.g., './target/all.ini'.");
             exit(1);
         } else {
             $targets_file = $_SERVER['argv'][1];
@@ -36,7 +56,7 @@ abstract class Bench
         // does the targets file exist?
         $realpath = realpath($targets_file);
         if (! $realpath || ! file_exists($realpath) || ! is_readable($realpath)) {
-            $this->_outln("Benchmark target file '$targets_file' does not exist or is not readable.");
+            $this->outln("Benchmark target file '$targets_file' does not exist or is not readable.");
             exit(1);
         }
         
@@ -54,7 +74,6 @@ abstract class Bench
         
         // set all available properties
         foreach ($vars as $var) {
-            $key = substr($var, 1);
             if (array_key_exists($key, $data)) {
                 $this->$var = $data[$key];
             }
@@ -63,59 +82,38 @@ abstract class Bench
         // read in the targets file
         if (substr($targets_file, -4) == '.ini') {
             // a .ini file with "name = path"
-            $this->_targets = parse_ini_file($targets_file);
+            $this->targets = parse_ini_file($targets_file);
         } else {
             // a non-ini file with one target URI per line
             $keys = file($targets_file);
             $vals = array_fill(0, count($keys), null);
-            $this->_targets = array_combine($keys, $vals);
+            $this->targets = array_combine($keys, $vals);
         }
         
         // make a directory for logs
         $time = date("Y-m-d\TH:i:s");
-        $this->_log_dir = "{$base_dir}/log/{$time}";
-        @mkdir($this->_log_dir, 0777, true);
+        $this->log_dir = "{$base_dir}/log/{$time}";
+        @mkdir($this->log_dir, 0777, true);
         
         // reset the req/sec data
-        $this->_req_sec = array();
+        $this->req_sec = array();
     }
     
-    public function exec()
-    {
-        // initialize
-        $this->_init();
-        
-        // run against the list of targets
-        foreach ($this->_targets as $name => $path) {
-            // only run non-blank targets
-            $name = trim($name);
-            if ($name) {
-                $this->_runAllPasses($name, $path);
-            }
-        }
-        
-        // print the report
-        $this->_report();
-        
-        // done!
-        exit(0);
-    }
-    
-    protected function _out($text = null)
+    protected function out($text = null)
     {
         echo $text;
     }
     
-    protected function _outln($text = null)
+    protected function outln($text = null)
     {
-        $this->_out($text . PHP_EOL);
+        $this->out($text . PHP_EOL);
     }
     
-    protected function _runAllPasses($name, $path)
+    protected function runAllPasses($name, $path)
     {
         // make sure the we have a good href for the target name
         if (strpos($name, '://') === false) {
-            $href = "http://{$this->_domain}/$name";
+            $href = "http://{$this->domain}/$name";
         } else {
             $href = $name;
         }
@@ -126,39 +124,39 @@ abstract class Bench
         }
         
         // make a log dir for the target href
-        $log_name = "{$this->_log_dir}/" . urlencode($href);
+        $log_name = "{$this->log_dir}/" . urlencode($href);
         @mkdir($log_name, 0777, true);
         
         // restart the server for a fresh environment
-        if ($this->_apache_restart) {
-            passthru($this->_apache_restart);
+        if ($this->apache_restart) {
+            passthru($this->apache_restart);
         }
         
         // prime the cache
-        $this->_outln("$name: prime the cache");
-        passthru("{$this->_curl} $href");
-        $this->_outln();
+        $this->outln("$name: prime the cache");
+        passthru("{$this->curl} $href");
+        $this->outln();
         
         // run the benchmark passes
-        for ($i = 1; $i <= $this->_passes; $i++) {
+        for ($i = 1; $i <= $this->passes; $i++) {
             
             // where to log the pass?
             $log_file = "{$log_name}/$i.log";
             
             // run the pass
-            $this->_outln("$name: pass $i");
-            $this->_runOnePass($href, $log_file);
+            $this->outln("$name: pass $i");
+            $this->runOnePass($href, $log_file);
             
             // show the req/sec from the pass
-            $req_sec = $this->_fetchReqSec($log_file);
-            $this->_outln("### req/sec: $req_sec ###");
+            $req_sec = $this->fetchReqSec($log_file);
+            $this->outln("### req/sec: $req_sec ###");
             
             // retain the req/sec data
-            $this->_req_sec[$name][$i] = $req_sec;
+            $this->req_sec[$name][$i] = $req_sec;
         }
     }
     
-    protected function _report()
+    protected function report()
     {
         // all report data: keyed by row, then by col
         $report = array();
@@ -173,7 +171,7 @@ abstract class Bench
         $name_pad = 8;
         
         // each of the frameworks benched
-        foreach ($this->_req_sec as $name => $pass) {
+        foreach ($this->req_sec as $name => $pass) {
             
             // keep a padding for the longest target name
             $len = strlen($name);
@@ -194,7 +192,7 @@ abstract class Bench
             $report[$name]['avg'] = sprintf($format, $avg);
             
             // if this is the comparison benchmark, save the comparison value
-            if ($name == $this->_compare) {
+            if ($name == $this->compare) {
                 $cmp = $avg;
             }
             
@@ -204,35 +202,35 @@ abstract class Bench
         }
         
         // header line
-        $this->_outln();
-        $this->_out(str_pad('Target', $name_pad));
-        $this->_out(' |      rel');
-        $this->_out(' |      avg');
-        for($i = 1; $i <= $this->_passes; $i++) {
-            $this->_out(' | ' . str_pad($i, 8, ' ', STR_PAD_LEFT));
+        $this->outln();
+        $this->out(str_pad('Target', $name_pad));
+        $this->out(' |      rel');
+        $this->out(' |      avg');
+        for($i = 1; $i <= $this->passes; $i++) {
+            $this->out(' | ' . str_pad($i, 8, ' ', STR_PAD_LEFT));
         }
-        $this->_outln();
+        $this->outln();
         
         // separator line
-        $this->_out(str_pad('', $name_pad, '-'));
-        for ($i = 1; $i <= $this->_passes + 2; $i++) {
-            $this->_out(' | --------');
+        $this->out(str_pad('', $name_pad, '-'));
+        for ($i = 1; $i <= $this->passes + 2; $i++) {
+            $this->out(' | --------');
         }
-        $this->_outln();
+        $this->outln();
         
         // output each data line, figuring %-of-php score as we go
         foreach ($report as $key => $val) {
-            if ($this->_compare) {
+            if ($this->compare) {
                 $val['rel'] = sprintf("%8.4f", $val['avg'] / $cmp);
             } else {
                 $val['rel'] = '   n/a  ';
             }
             $line = str_pad($key, $name_pad) . " | " . implode(" | ", $val);
-            $this->_outln($line);
+            $this->outln($line);
         }
     }
     
-    abstract protected function _runOnePass($href, $log_file);
+    abstract protected function runOnePass($href, $log_file);
     
-    abstract protected function _fetchReqSec($log_file);
+    abstract protected function fetchReqSec($log_file);
 }

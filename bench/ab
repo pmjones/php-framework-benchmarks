@@ -1,0 +1,8 @@
+#!/usr/bin/env php
+<?php
+ini_set('error_reporting', E_ALL | E_STRICT);
+ini_set('error_display', true);
+ini_set('html_errors', false);
+require dirname(__DIR__) . '/include/bench/Ab.php';
+$bench = new \bench\Ab;
+$bench->exec();
