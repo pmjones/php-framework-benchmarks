@@ -2,7 +2,7 @@
 namespace bench;
 abstract class Base
 {
-    protected $apache_restart;
+    protected $restart;
     
     protected $compare;
     
@@ -47,7 +47,7 @@ abstract class Base
     {
         // make sure we have a target file specified
         if (empty($_SERVER['argv'][1])) {
-            $this->outln("Please specify a benchmark target file; e.g., './target/all.ini'.");
+            $this->outln("Please specify a targets file; e.g., './target/all.ini'.");
             exit(1);
         } else {
             $targets_file = $_SERVER['argv'][1];
@@ -56,7 +56,7 @@ abstract class Base
         // does the targets file exist?
         $realpath = realpath($targets_file);
         if (! $realpath || ! file_exists($realpath) || ! is_readable($realpath)) {
-            $this->outln("Benchmark target file '$targets_file' does not exist or is not readable.");
+            $this->outln("Targets file '$targets_file' does not exist or is not readable.");
             exit(1);
         }
         
@@ -78,6 +78,9 @@ abstract class Base
                 $this->$var = $data[$var];
             }
         }
+        
+        // massage the concurrency levels
+        $this->concurrent = explode(',', $this->concurrent);
         
         // read in the targets file
         if (substr($targets_file, -4) == '.ini') {
@@ -123,13 +126,12 @@ abstract class Base
             $href .= "/$path";
         }
         
-        // make a log dir for the target href
-        $log_name = "{$this->log_dir}/" . urlencode($href);
-        @mkdir($log_name, 0777, true);
-        
         // restart the server for a fresh environment
-        if ($this->apache_restart) {
-            passthru($this->apache_restart);
+        if ($this->restart) {
+            $this->outln("Restarting web server ...");
+            passthru($this->restart);
+        } else {
+            $this->outln("Not restarting web server.");
         }
         
         // prime the cache
@@ -137,22 +139,38 @@ abstract class Base
         passthru("{$this->curl} $href");
         $this->outln();
         
-        // run the benchmark passes
-        for ($i = 1; $i <= $this->passes; $i++) {
+        // for each concurrency level ...
+        foreach ($this->concurrent as $conc) {
             
-            // where to log the pass?
-            $log_file = "{$log_name}/$i.log";
+            // make sure we have a concurrency level
+            $conc = (int) $conc;
+            if (! $conc) {
+                continue;
+            }
             
-            // run the pass
-            $this->outln("$name: pass $i");
-            $this->runOnePass($href, $log_file);
+            // make a log dir for the target href and concurrency
+            $log_name = "{$this->log_dir}/{$conc}/" . urlencode($href);
+            @mkdir($log_name, 0777, true);
             
-            // show the req/sec from the pass
-            $req_sec = $this->fetchReqSec($log_file);
-            $this->outln("### req/sec: $req_sec ###");
-            
-            // retain the req/sec data
-            $this->req_sec[$name][$i] = $req_sec;
+            // run each of the passes
+            for ($pass = 1; $pass <= $this->passes; $pass++) {
+                
+                // where to log the pass?
+                $log_file = "{$log_name}/$pass.log";
+                
+                // run the pass
+                $this->out("$name: ");
+                $this->out("concurrency $conc, ");
+                $this->outln("pass $pass of $this->passes");
+                $this->runOnePass($href, $conc, $log_file);
+                
+                // show the req/sec from the pass
+                $req_sec = $this->fetchReqSec($log_file);
+                $this->outln("### req/sec: $req_sec ###");
+                
+                // retain the req/sec data
+                $this->req_sec[$name][$conc][$pass] = $req_sec;
+            }
         }
     }
     
@@ -167,45 +185,51 @@ abstract class Base
         // number formatting
         $format = '%8.2f';
         
-        // padding for the framework name column
+        // padding for the target name column
         $name_pad = 8;
         
-        // each of the frameworks benched
-        foreach ($this->req_sec as $name => $pass) {
+        // each of the targets benched
+        foreach ($this->req_sec as $name => $concs) {
             
-            // keep a padding for the longest target name
+            // keep a padding for the longest name
             $len = strlen($name);
             if ($len > $name_pad) {
-                $name_pad = $len + 2;
+                $name_pad = $len;
             }
             
-            // output the bench on its own line
-            $report[$name] = array('rel' => null, 'avg' => null);
-            
-            // read the pass data
-            foreach ($pass as $key => $req_sec) {
-                $report[$name][$key] = sprintf($format, $req_sec);
-            }
-            
-            // figure the average
-            $avg = array_sum($report[$name]) / (count($report[$name]) - 2); // -2 for rel, avg
-            $report[$name]['avg'] = sprintf($format, $avg);
-            
-            // if this is the comparison benchmark, save the comparison value
-            if ($name == $this->compare) {
-                $cmp = $avg;
-            }
-            
-            if (strlen($name) > $name_pad) {
-                $name_pad = strlen($name);
+            // each of the concurrency levels for the target
+            foreach ($concs as $conc => $passes) {
+                
+                // output the bench on its own line
+                $report[$name][$conc] = array('rel' => null, 'avg' => null);
+                
+                // read the pass data
+                foreach ($passes as $pass => $req_sec) {
+                    $report[$name][$conc][$pass] = sprintf($format, $req_sec);
+                }
+                
+                // figure the average
+                $numer = array_sum($report[$name][$conc]);
+                $denom = (count($report[$name][$conc]) - 2); // -2 for rel, avg
+                $avg =  $numer / $denom;
+                $report[$name][$conc]['avg'] = sprintf($format, $avg);
+                
+                // if this is the comparison target, save the comparison value
+                if ($name == $this->compare) {
+                    $cmp = $avg;
+                }
             }
         }
+        
+        // always add some extra name padding
+        $name_pad += 2;
         
         // header line
         $this->outln();
         $this->out(str_pad('Target', $name_pad));
-        $this->out(' |      rel');
-        $this->out(' |      avg');
+        $this->out(' |  concurr');
+        $this->out(' | relative');
+        $this->out(' |  average');
         for($i = 1; $i <= $this->passes; $i++) {
             $this->out(' | ' . str_pad($i, 8, ' ', STR_PAD_LEFT));
         }
@@ -213,24 +237,37 @@ abstract class Base
         
         // separator line
         $this->out(str_pad('', $name_pad, '-'));
-        for ($i = 1; $i <= $this->passes + 2; $i++) {
+        for ($i = 1; $i <= $this->passes + 3; $i++) {
             $this->out(' | --------');
         }
         $this->outln();
         
-        // output each data line, figuring %-of-php score as we go
-        foreach ($report as $key => $val) {
-            if ($this->compare) {
-                $val['rel'] = sprintf("%8.4f", $val['avg'] / $cmp);
-            } else {
-                $val['rel'] = '   n/a  ';
+        // go through each reported target ...
+        foreach ($report as $name => $concs) {
+            
+            // for each concurrency level ...
+            foreach ($concs as $conc => $data) {
+                
+                // compute the relative performance as we go
+                if ($this->compare) {
+                    $data['rel'] = sprintf("%8.4f", $data['avg'] / $cmp);
+                } else {
+                    $data['rel'] = '   n/a  ';
+                }
+                
+                // the target name
+                $this->out(str_pad($name, $name_pad) . " | ");
+                
+                // the concurrency level
+                $this->out(sprintf("%8d", $conc) . " | ");
+                
+                // relative, average, and passes
+                $this->outln(implode(" | ", $data));
             }
-            $line = str_pad($key, $name_pad) . " | " . implode(" | ", $val);
-            $this->outln($line);
         }
     }
     
-    abstract protected function runOnePass($href, $log_file);
+    abstract protected function runOnePass($href, $conc, $log_file);
     
     abstract protected function fetchReqSec($log_file);
 }

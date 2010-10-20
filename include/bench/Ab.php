@@ -14,10 +14,10 @@ class Ab extends Base
         }
     }
     
-    protected function runOnePass($href, $log_file)
+    protected function runOnePass($href, $conc, $log_file)
     {
         $cmd = "{$this->ab} "
-             . "-c {$this->concurrent} "
+             . "-c {$conc} "
              . "-t {$this->seconds} "
              . "$href > {$log_file}";
         

@@ -16,12 +16,12 @@ class HttpLoad extends Base
         }
     }
     
-    protected function runOnePass($href, $log_file)
+    protected function runOnePass($href, $conc, $log_file)
     {
         file_put_contents($this->http_load_file, $href);
         
         $cmd = "{$this->http_load} "
-             . "-parallel {$this->concurrent} "
+             . "-parallel {$conc} "
              . "-seconds {$this->seconds} "
              . "{$this->http_load_file} > {$log_file}";
         

@@ -18,7 +18,7 @@ class Siege extends Base
         }
     }
     
-    protected function runOnePass($href, $log_file)
+    protected function runOnePass($href, $conc, $log_file)
     {
         // vars for siege config
         $vars = array (
@@ -28,7 +28,7 @@ class Siege extends Base
             'protocol'          => 'HTTP/1.0',
             'chunked'           => 'true',
             'connection'        => 'close',
-            'concurrent'        => $this->concurrent,
+            'concurrent'        => $conc,
             'time'              => "{$this->seconds}s",
             'benchmark'         => 'true',
             'spinner'           => 'false',
