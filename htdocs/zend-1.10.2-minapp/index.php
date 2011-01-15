@@ -1,6 +1,4 @@
 <?php
-session_id('foobar');
-
 $root = dirname(__FILE__);
 set_include_path("$root/library");
 define('APPLICATION_PATH', "$root/minapp");
