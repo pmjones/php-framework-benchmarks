@@ -53,20 +53,22 @@ After the instance comes online, issue the following shell commands to install a
     
     # modify the Apache DocumentRoot for the project checkout
     cd /etc/apache2/sites-available/
-    cp default default-orig
-    sed s~/var/www~/var/www/htdocs~ default-orig > default
+    sed -i "s~/var/www~/var/www/htdocs~" default
+    sed -i "s/AllowOverride None/AllowOverride All/" default
     
-    # turn off mod_deflate
+    # turn off mod_deflate, turn on mod_rewrite
     a2dismod deflate
+    a2enmod rewrite
     
     # replace /var/www with the project checkout
     rm -rf /var/www
     git clone git://github.com/pmjones/php-framework-benchmarks.git /var/www
     
-    # switch to /var/www and open all permissions (e.g. for caches), and
-    # restart apache
+    # switch to /var/www and open all permissions (e.g. for caches)
     cd /var/www
     chmod -R 777 htdocs
+    
+    # restart apache, and done
     /etc/init.d/apache2 restart
     
 Now you can run the benchmarks against a series of framework targets.
