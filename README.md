@@ -68,7 +68,10 @@ After the instance comes online, issue the following shell commands to install a
     cd /var/www
     chmod -R 777 htdocs
     
-    # restart apache, and done
+    # create real config file from the distribution copy
+    cp config.ini-dist config.ini
+    
+    # restart apache
     /etc/init.d/apache2 restart
     
 Now you can run the benchmarks against a series of framework targets.

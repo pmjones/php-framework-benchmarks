@@ -1,1 +1,5 @@
+htdocs/symfony-2.0.0pr1/hello/cache
+htdocs/symfony-2.0.0pr2/hello/cache
+htdocs/symfony-2.0.0pr3/hello/cache
 htdocs/symfony-2.0.0pr4/app/cache
+config.ini
