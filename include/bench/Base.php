@@ -67,7 +67,7 @@ abstract class Base
         $base_dir = dirname(dirname(__DIR__));
         
         // the ini file with property values
-        $data = parse_ini_file("{$base_dir}/bench.ini");
+        $data = parse_ini_file("{$base_dir}/config.ini");
         
         // what properties to load?
         $vars = array_keys(get_class_vars(get_class($this)));
