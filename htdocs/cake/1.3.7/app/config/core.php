@@ -48,7 +48,7 @@
  *    Configure::write('log', E_ERROR | E_WARNING);
  *    Configure::write('log', E_ALL ^ E_NOTICE);
  */
-	Configure::write('log', true);
+	Configure::write('log', false);
 
 /**
  * Application wide charset encoding
@@ -66,7 +66,7 @@
  *
  * And uncomment the App.baseUrl below:
  */
-	//Configure::write('App.baseUrl', env('SCRIPT_NAME'));
+  Configure::write('App.baseUrl', env('SCRIPT_NAME'));
 
 /**
  * Uncomment the define below to use CakePHP prefix routes.
@@ -124,7 +124,7 @@
  * the cake shell command: cake schema create Sessions
  *
  */
-	Configure::write('Session.save', 'php');
+  // Configure::write('Session.save', 'php');
 
 /**
  * The model name to be used for the session model.
@@ -164,7 +164,7 @@
  * characters."
  * @link http://php.net/session_name
  */
-	Configure::write('Session.cookie', 'CAKEPHP');
+  // Configure::write('Session.cookie', 'CAKEPHP');
 
 /**
  * Session time out time (in seconds).
@@ -175,14 +175,14 @@
 /**
  * If set to false, sessions are not automatically started.
  */
-	Configure::write('Session.start', true);
+  // Configure::write('Session.start', true);
 
 /**
  * When set to false, HTTP_USER_AGENT will not be checked
  * in the session. You might want to set the value to false, when dealing with
  * older versions of IE, Chrome Frame or certain web-browsing devices and AJAX
  */
-	Configure::write('Session.checkAgent', true);
+  // Configure::write('Session.checkAgent', true);
 
 /**
  * The level of CakePHP security. The session timeout time defined
@@ -196,17 +196,17 @@
  * CakePHP session IDs are also regenerated between requests if
  * 'Security.level' is set to 'high'.
  */
-	Configure::write('Security.level', 'medium');
+  // Configure::write('Security.level', 'medium');
 
 /**
  * A random string used in security hashing methods.
  */
-	Configure::write('Security.salt', 'DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mix');
+  // Configure::write('Security.salt', 'DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi');
 
 /**
  * A random numeric string (digits only) used to encrypt/decrypt strings.
  */
-	Configure::write('Security.cipherSeed', '768593096574535424967496836451');
+  // Configure::write('Security.cipherSeed', '76859309657453542496749683645');
 
 /**
  * Apply timestamps with the last modified time to static assets (js, css, images).
@@ -238,8 +238,8 @@
  * The classname and database used in CakePHP's
  * access control lists.
  */
-	Configure::write('Acl.classname', 'DbAcl');
-	Configure::write('Acl.database', 'default');
+  // Configure::write('Acl.classname', 'DbAcl');
+  // Configure::write('Acl.database', 'default');
 
 /**
  * If you are on PHP 5.3 uncomment this line and correct your server timezone
@@ -300,4 +300,10 @@
  *	));
  *
  */
-	Cache::config('default', array('engine' => 'File'));
+  // Cache::config('default', array('engine' => 'File'));
+ 	Cache::config('default', array(
+		'engine' => 'Apc', //[required]
+		'duration'=> 3600, //[optional]
+		'probability'=> 100, //[optional]
+    // 'prefix' => Inflector::slug(APP_DIR) . '_', //[optional]  prefix every cache file with this string
+	));
