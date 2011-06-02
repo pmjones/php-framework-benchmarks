@@ -13,7 +13,7 @@ The benchmark is performed on an Amazon EC2 `m1.large` instance. This provides 4
 
 Installation instructions for EC2 are beyond the scope of this project. Once you have an EC2 account at Amazon and the appropriate EC2 shell tools, run a new instance under your own username ...
 
-    ec2-run-instances ami-688c7801 --instance-type=m1.large -k {$USERNAME}
+    ec2-run-instances ami-08f40561 --instance-type=m1.large -k {$USERNAME}
 
 ... then SSH into the running instance to continue.
 
