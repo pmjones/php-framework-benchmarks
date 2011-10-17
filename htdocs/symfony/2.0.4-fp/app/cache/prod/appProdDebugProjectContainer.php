@@ -42,7 +42,7 @@ class appProdDebugProjectContainer extends Container
      */
     protected function getAnnotationReaderService()
     {
-        return $this->services['annotation_reader'] = new \Doctrine\Common\Annotations\FileCacheReader(new \Doctrine\Common\Annotations\AnnotationReader(), '/Users/pmjones/Sites/localhost/php-framework-benchmarks/htdocs/symfony/2.0.4-fp/app/cache/prod/annotations', true);
+        return $this->services['annotation_reader'] = new \Doctrine\Common\Annotations\FileCacheReader(new \Doctrine\Common\Annotations\AnnotationReader(), '/var/www/htdocs/symfony/2.0.4-fp/app/cache/prod/annotations', true);
     }
 
     /**
@@ -55,7 +55,7 @@ class appProdDebugProjectContainer extends Container
      */
     protected function getCacheWarmerService()
     {
-        return $this->services['cache_warmer'] = new \Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerAggregate(array(0 => new \Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplatePathsCacheWarmer(new \Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplateFinder($this->get('kernel'), $this->get('templating.name_parser'), '/Users/pmjones/Sites/localhost/php-framework-benchmarks/htdocs/symfony/2.0.4-fp/app/Resources'), $this->get('templating.locator')), 1 => new \Symfony\Bundle\FrameworkBundle\CacheWarmer\RouterCacheWarmer($this->get('router'))));
+        return $this->services['cache_warmer'] = new \Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerAggregate(array(0 => new \Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplatePathsCacheWarmer(new \Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplateFinder($this->get('kernel'), $this->get('templating.name_parser'), '/var/www/htdocs/symfony/2.0.4-fp/app/Resources'), $this->get('templating.locator')), 1 => new \Symfony\Bundle\FrameworkBundle\CacheWarmer\RouterCacheWarmer($this->get('router'))));
     }
 
     /**
@@ -87,7 +87,7 @@ class appProdDebugProjectContainer extends Container
      */
     protected function getFileLocatorService()
     {
-        return $this->services['file_locator'] = new \Symfony\Component\HttpKernel\Config\FileLocator($this->get('kernel'), '/Users/pmjones/Sites/localhost/php-framework-benchmarks/htdocs/symfony/2.0.4-fp/app/Resources');
+        return $this->services['file_locator'] = new \Symfony\Component\HttpKernel\Config\FileLocator($this->get('kernel'), '/var/www/htdocs/symfony/2.0.4-fp/app/Resources');
     }
 
     /**
@@ -169,7 +169,7 @@ class appProdDebugProjectContainer extends Container
      */
     protected function getRouterService()
     {
-        return $this->services['router'] = new \Symfony\Bundle\FrameworkBundle\Routing\Router($this, '/Users/pmjones/Sites/localhost/php-framework-benchmarks/htdocs/symfony/2.0.4-fp/app/config/routing.yml', array('cache_dir' => '/Users/pmjones/Sites/localhost/php-framework-benchmarks/htdocs/symfony/2.0.4-fp/app/cache/prod', 'debug' => true, 'generator_class' => 'Symfony\\Component\\Routing\\Generator\\UrlGenerator', 'generator_base_class' => 'Symfony\\Component\\Routing\\Generator\\UrlGenerator', 'generator_dumper_class' => 'Symfony\\Component\\Routing\\Generator\\Dumper\\PhpGeneratorDumper', 'generator_cache_class' => 'appprodUrlGenerator', 'matcher_class' => 'Symfony\\Bundle\\FrameworkBundle\\Routing\\RedirectableUrlMatcher', 'matcher_base_class' => 'Symfony\\Bundle\\FrameworkBundle\\Routing\\RedirectableUrlMatcher', 'matcher_dumper_class' => 'Symfony\\Component\\Routing\\Matcher\\Dumper\\PhpMatcherDumper', 'matcher_cache_class' => 'appprodUrlMatcher'));
+        return $this->services['router'] = new \Symfony\Bundle\FrameworkBundle\Routing\Router($this, '/var/www/htdocs/symfony/2.0.4-fp/app/config/routing.yml', array('cache_dir' => '/var/www/htdocs/symfony/2.0.4-fp/app/cache/prod', 'debug' => true, 'generator_class' => 'Symfony\\Component\\Routing\\Generator\\UrlGenerator', 'generator_base_class' => 'Symfony\\Component\\Routing\\Generator\\UrlGenerator', 'generator_dumper_class' => 'Symfony\\Component\\Routing\\Generator\\Dumper\\PhpGeneratorDumper', 'generator_cache_class' => 'appprodUrlGenerator', 'matcher_class' => 'Symfony\\Bundle\\FrameworkBundle\\Routing\\RedirectableUrlMatcher', 'matcher_base_class' => 'Symfony\\Bundle\\FrameworkBundle\\Routing\\RedirectableUrlMatcher', 'matcher_dumper_class' => 'Symfony\\Component\\Routing\\Matcher\\Dumper\\PhpMatcherDumper', 'matcher_cache_class' => 'appprodUrlMatcher'));
     }
 
     /**
@@ -302,7 +302,7 @@ class appProdDebugProjectContainer extends Container
      */
     protected function getTemplating_Helper_CodeService()
     {
-        return $this->services['templating.helper.code'] = new \Symfony\Bundle\FrameworkBundle\Templating\Helper\CodeHelper(NULL, '/Users/pmjones/Sites/localhost/php-framework-benchmarks/htdocs/symfony/2.0.4-fp/app');
+        return $this->services['templating.helper.code'] = new \Symfony\Bundle\FrameworkBundle\Templating\Helper\CodeHelper(NULL, '/var/www/htdocs/symfony/2.0.4-fp/app');
     }
 
     /**
@@ -471,7 +471,7 @@ class appProdDebugProjectContainer extends Container
      */
     protected function getTranslator_DefaultService()
     {
-        return $this->services['translator.default'] = new \Symfony\Bundle\FrameworkBundle\Translation\Translator($this, $this->get('translator.selector'), array('translation.loader.php' => 'php', 'translation.loader.yml' => 'yml', 'translation.loader.xliff' => 'xliff'), array('cache_dir' => '/Users/pmjones/Sites/localhost/php-framework-benchmarks/htdocs/symfony/2.0.4-fp/app/cache/prod/translations', 'debug' => true), NULL);
+        return $this->services['translator.default'] = new \Symfony\Bundle\FrameworkBundle\Translation\Translator($this, $this->get('translator.selector'), array('translation.loader.php' => 'php', 'translation.loader.yml' => 'yml', 'translation.loader.xliff' => 'xliff'), array('cache_dir' => '/var/www/htdocs/symfony/2.0.4-fp/app/cache/prod/translations', 'debug' => true), NULL);
     }
 
     /**
@@ -515,7 +515,7 @@ class appProdDebugProjectContainer extends Container
      */
     protected function getTemplating_LocatorService()
     {
-        return $this->services['templating.locator'] = new \Symfony\Bundle\FrameworkBundle\Templating\Loader\TemplateLocator($this->get('file_locator'), '/Users/pmjones/Sites/localhost/php-framework-benchmarks/htdocs/symfony/2.0.4-fp/app/cache/prod');
+        return $this->services['templating.locator'] = new \Symfony\Bundle\FrameworkBundle\Templating\Loader\TemplateLocator($this->get('file_locator'), '/var/www/htdocs/symfony/2.0.4-fp/app/cache/prod');
     }
 
     /**
@@ -584,12 +584,12 @@ class appProdDebugProjectContainer extends Container
     protected function getDefaultParameters()
     {
         return array(
-            'kernel.root_dir' => '/Users/pmjones/Sites/localhost/php-framework-benchmarks/htdocs/symfony/2.0.4-fp/app',
+            'kernel.root_dir' => '/var/www/htdocs/symfony/2.0.4-fp/app',
             'kernel.environment' => 'prod',
             'kernel.debug' => true,
             'kernel.name' => 'app',
-            'kernel.cache_dir' => '/Users/pmjones/Sites/localhost/php-framework-benchmarks/htdocs/symfony/2.0.4-fp/app/cache/prod',
-            'kernel.logs_dir' => '/Users/pmjones/Sites/localhost/php-framework-benchmarks/htdocs/symfony/2.0.4-fp/app/logs',
+            'kernel.cache_dir' => '/var/www/htdocs/symfony/2.0.4-fp/app/cache/prod',
+            'kernel.logs_dir' => '/var/www/htdocs/symfony/2.0.4-fp/app/logs',
             'kernel.bundles' => array(
                 'FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
                 'AcmeHelloBundle' => 'Acme\\HelloBundle\\AcmeHelloBundle',
@@ -612,7 +612,7 @@ class appProdDebugProjectContainer extends Container
             'translation.loader.yml.class' => 'Symfony\\Component\\Translation\\Loader\\YamlFileLoader',
             'translation.loader.xliff.class' => 'Symfony\\Component\\Translation\\Loader\\XliffFileLoader',
             'debug.event_dispatcher.class' => 'Symfony\\Bundle\\FrameworkBundle\\Debug\\TraceableEventDispatcher',
-            'debug.container.dump' => '/Users/pmjones/Sites/localhost/php-framework-benchmarks/htdocs/symfony/2.0.4-fp/app/cache/prod/appProdDebugProjectContainer.xml',
+            'debug.container.dump' => '/var/www/htdocs/symfony/2.0.4-fp/app/cache/prod/appProdDebugProjectContainer.xml',
             'kernel.secret' => 'foobar',
             'kernel.trust_proxy_headers' => false,
             'router.class' => 'Symfony\\Bundle\\FrameworkBundle\\Routing\\Router',
@@ -630,7 +630,7 @@ class appProdDebugProjectContainer extends Container
             'router.cache_warmer.class' => 'Symfony\\Bundle\\FrameworkBundle\\CacheWarmer\\RouterCacheWarmer',
             'router.options.matcher.cache_class' => 'app%kernel.environment%UrlMatcher',
             'router.options.generator.cache_class' => 'app%kernel.environment%UrlGenerator',
-            'router.resource' => '/Users/pmjones/Sites/localhost/php-framework-benchmarks/htdocs/symfony/2.0.4-fp/app/config/routing.yml',
+            'router.resource' => '/var/www/htdocs/symfony/2.0.4-fp/app/config/routing.yml',
             'request_listener.http_port' => 80,
             'request_listener.https_port' => 443,
             'templating.engine.delegating.class' => 'Symfony\\Bundle\\FrameworkBundle\\Templating\\DelegatingEngine',
