@@ -1,0 +1,5 @@
+framework:
+    router:     { resource: "%kernel.root_dir%/config/routing.yml" }
+    templating: { engines: ['php'] }
+    secret:     foobar
+    translator: { enabled: false }

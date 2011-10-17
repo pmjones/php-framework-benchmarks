@@ -83,7 +83,7 @@ Running the Benchmarks
  At the EC2 command line, issue the following:
     
     cd /var/www
-    ./bench/ab target/all.ini
+    ./bench/http_load target/all.ini
 
 (There are other bench scripts and target files as well.)
 
