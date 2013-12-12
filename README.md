@@ -61,11 +61,10 @@ After the instance comes online, issue the following shell commands to install a
     # replace /var/www with the project checkout
     rm -rf /var/www
     git clone git://github.com/pmjones/php-framework-benchmarks.git /var/www
-    cd /var/www
-    git checkout micro
     
     # switch to /var/www and open all permissions (e.g. for caches)
     cd /var/www
+    git checkout micro
     chmod -R 777 htdocs
     
     # create real config file from the distribution copy
