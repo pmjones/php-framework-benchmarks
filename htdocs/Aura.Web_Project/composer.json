@@ -1,0 +1,20 @@
+{
+    "name": "aura/web-project",
+    "type": "project",
+    "description": "A minimal framework built from Aura v2 packages",
+    "keywords": [
+        "framework"
+    ],
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "Paul M. Jones",
+            "email": "pmjones88@gmail.com",
+            "homepage": "https://github.com/pmjones"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "aura/web-kernel": "2.*@dev"
+    }
+}

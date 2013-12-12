@@ -1,0 +1,28 @@
+{
+    "name": "aura/includer",
+    "type": "library",
+    "description": "Include multiple files from specified directories, in order, with variables extracted into a limited include scope.",
+    "keywords": ["include", "limited", "scope"],
+    "homepage": "http://auraphp.com/package/Aura.Includer",
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "Aura.Includer Contributors",
+            "homepage": "https://github.com/auraphp/Aura.Includer/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "files": ["autoload.php"]
+    },
+    "extra": {
+        "aura": {
+            "type": "library"
+        },
+        "branch-alias": {
+            "dev-develop-2": "2.0.x-dev"
+        }
+    }
+}

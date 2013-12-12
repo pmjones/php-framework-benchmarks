@@ -1,0 +1,28 @@
+{
+    "name": "aura/web",
+    "type": "library",
+    "description": "Provides web Request and Response objects for use by web controllers. These are representations of the PHP web environment, not HTTP request and response objects proper.",
+    "keywords": [ "request", "response" ],
+    "homepage": "http://auraphp.com/Aura.Web",
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "Aura Contributors",
+            "homepage": "https://github.com/auraphp/Aura.Web/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "files": ["autoload.php"]
+    },
+    "extra": {
+        "aura": {
+            "type": "library"
+        },
+        "branch-alias": {
+            "dev-develop-2": "2.0.x-dev"
+        }
+    }
+}

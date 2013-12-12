@@ -1,0 +1,28 @@
+{
+    "name": "aura/dispatcher",
+    "type": "library",
+    "description": "Creates objects from a factory and invokes methods using named parameters; also provides a trait for invoking closures and object methods with named parameters.",
+    "keywords": ["controller", "dispatcher", "dispatcher", "factory"],
+    "homepage": "http://auraphp.github.com/Aura.Dispatcher",
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "Aura.Dispatcher Contributors",
+            "homepage": "https://github.com/auraphp/Aura.Dispatcher/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "files": ["autoload.php"]
+    },
+    "extra": {
+        "aura": {
+            "type": "library"
+        },
+        "branch-alias": {
+            "dev-develop-2": "2.0.x-dev"
+        }
+    }
+}

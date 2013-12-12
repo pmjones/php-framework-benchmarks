@@ -1,0 +1,30 @@
+{
+    "name": "aura/router",
+    "type": "library",
+    "description": "A web router implementation; given a URI path and a copy of $_SERVER, it will extract path-info parameter values for a specific route.",
+    "keywords": [ "route", "router", "routing" ],
+    "homepage": "http://auraphp.github.com/Aura.Router",
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "Aura Contributors",
+            "homepage": "https://github.com/auraphp/Aura.Router/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "files": [
+            "autoload.php"
+        ]
+    },
+    "extra": {
+        "aura": {
+            "type": "library"
+        },
+        "branch-alias": {
+            "dev-develop-2": "2.0.x-dev"
+        }
+    }
+}
