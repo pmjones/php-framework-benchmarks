@@ -9,11 +9,11 @@ Benchmarking Server Setup
 Hardware and Operating System
 -----------------------------
 
-The benchmark is performed on an Amazon EC2 `m1.large` instance. This provides 4 EC2 compute units and 7.5 G of RAM.  The operating system is a stock 64-bit Ubuntu 10.10 image provided by <http://alestic.com/>.
+The benchmark is performed on an Amazon EC2 `m1.large` instance. This provides 4 EC2 compute units and 7.5 G of RAM.  The operating system is a stock 64-bit Ubuntu 13.04 image using instance storage provided via <http://cloud-images.ubuntu.com/releases/13.04/release/>.
 
 Installation instructions for EC2 are beyond the scope of this project. Once you have an EC2 account at Amazon and the appropriate EC2 shell tools, run a new instance under your own username ...
 
-    ec2-run-instances ami-08f40561 --instance-type=m1.large -k {$USERNAME}
+    ec2-run-instances ami-955b79fc --instance-type=m1.large --key={$USERNAME}
 
 ... then SSH into the running instance to continue.
 
@@ -34,15 +34,13 @@ After the instance comes online, issue the following shell commands to install a
 
     # apache2, php, git, siege
     aptitude install -y \
-        apache2-mpm-prefork \
+        apache2 \
         libapache2-mod-php5 \
+        php5 \
         php-apc \
-        php5-cli \
-        php5-common \
-        php5-dev \
         git-all \
         siege
-    
+
     # install http_load
     cd /root
     wget http://www.acme.com/software/http_load/http_load-12mar2006.tar.gz
@@ -63,6 +61,8 @@ After the instance comes online, issue the following shell commands to install a
     # replace /var/www with the project checkout
     rm -rf /var/www
     git clone git://github.com/pmjones/php-framework-benchmarks.git /var/www
+    cd /var/www
+    git checkout micro
     
     # switch to /var/www and open all permissions (e.g. for caches)
     cd /var/www
@@ -72,7 +72,7 @@ After the instance comes online, issue the following shell commands to install a
     cp config.ini-dist config.ini
     
     # restart apache
-    /etc/init.d/apache2 restart
+    service apache2 restart
     
 Now you can run the benchmarks against a series of framework targets.
 
