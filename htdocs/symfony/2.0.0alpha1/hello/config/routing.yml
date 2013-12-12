@@ -1,2 +1,0 @@
-include_hello:
-  resource: HelloBundle/Resources/config/routing.yml
