@@ -56,6 +56,15 @@ class ProjectKernel
     
     /**
      * 
+     * Has $packages been loaded from Composer?
+     * 
+     * @var bool
+     * 
+     */
+    protected $packages_loaded = false;
+    
+    /**
+     * 
      * The log of config activity; retained here because we don't have a
      * logger configured before configuration occurs.
      * 
@@ -100,29 +109,120 @@ class ProjectKernel
      */
     public function __invoke()
     {
-        // find the Aura-style packages
-        $this->loadPackages();
-        
-        // 1st stage config: define params, setters, services
-        $this->includeConfig('define');
-        
-        // lock the DI container
+        $this->loadConfig('define');
         $this->di->lock();
-        
-        // 2nd stage config: modify services programmatically
-        $this->includeConfig('modify');
-        
-        // debug logging
-        $logger = $this->di->get('logger');
-        $logger->debug(__METHOD__);
-        foreach ($this->debug as $messages) {
-            foreach ($messages as $message) {
-                $logger->debug(__METHOD__ . " {$message}");
-            }
+        $this->loadConfig('modify');
+        return $this->di;
+    }
+    
+    /**
+     * 
+     * Reads all the config files for a stage in the current mode, then caches
+     * them as a single file.
+     * 
+     * @param string $stage The configuration stage: 'define' or 'modify'.
+     * 
+     * @return null
+     * 
+     */
+    public function cacheConfig($stage)
+    {
+        $file = $this->getCacheFile($stage);
+        if (file_exists($file)) {
+            $this->addDebug("Cache config: unlink $file");
+            unlink($file);
+        } else {
+            $this->addDebug("Cache config: no file $file");
         }
         
+        $dir = dirname($file);
+        if (! is_dir($dir)) {
+            $this->addDebug("Cache config: mkdir $dir");
+            mkdir($dir, 0755, true);
+        }
+        
+        $this->addDebug("Cache config: read config files");
+        $code = $this->readConfig($stage);
+        $this->addDebug("Cache config: write $file");
+        file_put_contents($file, $code);
+    }
+    
+    /**
+     * 
+     * Returns the collected debug messages.
+     * 
+     * @return array
+     * 
+     */
+    public function getDebug()
+    {
+        return $this->debug;
+    }
+    
+    /**
+     * 
+     * Adds to the debug messages.
+     * 
+     * @param array|string $debug The additional debug messages.
+     * 
+     * @return null
+     * 
+     */
+    protected function addDebug($debug)
+    {
+        $this->debug = array_merge($this->debug, (array) $debug);
+    }
+    
+    /**
+     * 
+     * Returns a cloned includer for the config mode and stage.
+     * 
+     * @param string $stage The configuration stage: 'define' or 'modify'.
+     * 
+     * @return Includer
+     * 
+     */
+    protected function getIncluder($stage)
+    {
+        // load $packages from composer if needed
+        if (! $this->packages_loaded) {
+            $this->loadPackages();
+        }
+        
+        // the project config mode
+        $mode = $this->project->getMode();
+        
+        // a copy of the includer
+        $includer = clone $this->includer;
+        
+        // pass DI container to the config files
+        $includer->setVars(array('di' => $this->di));
+        
+        // always load the default configs
+        $includer->setFiles(array(
+            "config/default/{$stage}.php",
+            "config/default/{$stage}/*.php",
+        ));
+        
+        // load any non-default configs
+        if ($mode != 'default') {
+            $includer->addFiles(array(
+                "config/{$mode}/{$stage}.php",
+                "config/{$mode}/{$stage}/*.php",
+            ));
+        }
+        
+        // load in this order: library packages, kernel packages, project
+        $includer->addDirs($this->packages['library']);
+        $includer->addDirs($this->packages['kernel']);
+        $includer->addDir($this->project->getBasePath());
+        
+        // where should the cache file be?
+        $file = $this->getCacheFile($stage);
+        $includer->setCacheFile($file);
+        
         // done!
-        return $this->di;
+        return $includer;
     }
     
     /**
@@ -144,51 +244,57 @@ class ProjectKernel
             $dir = $this->project->getVendorPath($package->name);
             $this->packages[$type][$package->name] = $dir;
         }
+        $this->packages_loaded = true;
     }
     
     /**
      * 
-     * Includes the config files for each of the Aura-style packages in a
-     * limited scope, passing only the `$di` property.
+     * Loads the config files for each of the Aura-style packages.
      * 
      * @param string $stage The configuration stage: 'define' or 'modify'.
      * 
      * @return null
      * 
      */
-    protected function includeConfig($stage)
+    protected function loadConfig($stage)
     {
-        // the project config mode
+        $includer = $this->getIncluder($stage);
+        $includer->load();
+        $this->addDebug($includer->getDebug());
+    }
+    
+    /**
+     * 
+     * Reads the config files for each of the Aura-style packages.
+     * 
+     * @param string $stage The configuration stage: 'define' or 'modify'.
+     * 
+     * @return string The concatenated config files.
+     * 
+     */
+    protected function readConfig($stage)
+    {
+        $includer = $this->getIncluder($stage);
+        $code = '<?php /** '
+              . date('Y-m-d H:i:s')
+              . ' */' . PHP_EOL . PHP_EOL
+              . $includer->read();
+        $this->addDebug($includer->getDebug());
+        return $code;
+    }
+    
+    /**
+     * 
+     * Returns the config cache file path for the mode and stage.
+     * 
+     * @param string $stage The configuration stage: 'define' or 'modify'.
+     * 
+     * @return string The cache file path.
+     * 
+     */
+    protected function getCacheFile($stage)
+    {
         $mode = $this->project->getMode();
-        
-        // pass DI container to the config files
-        $this->includer->setVars(array('di' => $this->di));
-        
-        // always load the default configs
-        $this->includer->setFiles(array(
-            "config/default/{$stage}.php",
-            "config/default/{$stage}/*.php",
-        ));
-        
-        // load any non-default configs
-        if ($mode != 'default') {
-            $this->includer->addFiles(array(
-                "config/{$mode}/{$stage}.php",
-                "config/{$mode}/{$stage}/*.php",
-            ));
-        }
-        
-        // reset dirs, then load in this order:
-        // library packages, kernel packages, project
-        $this->includer->setDirs(array());
-        $this->includer->addDirs($this->packages['library']);
-        $this->includer->addDirs($this->packages['kernel']);
-        $this->includer->addDir($this->project->getBasePath());
-        
-        // actually do the loading
-        $this->includer->load();
-        
-        // retain the debug messages for logging
-        $this->debug[] = $this->includer->getDebug();
+        return $this->project->getTmpPath("cache/config/{$mode}/{$stage}.php");
     }
 }

@@ -113,12 +113,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/auraphp/Aura.Includer.git",
-                "reference": "fa59d7073c5e425e4d023d985a2ebc469b82675f"
+                "reference": "7ae81ab4d0126b6ac99a76e17e31f9a6a5ff8fd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/Aura.Includer/zipball/fa59d7073c5e425e4d023d985a2ebc469b82675f",
-                "reference": "fa59d7073c5e425e4d023d985a2ebc469b82675f",
+                "url": "https://api.github.com/repos/auraphp/Aura.Includer/zipball/7ae81ab4d0126b6ac99a76e17e31f9a6a5ff8fd2",
+                "reference": "7ae81ab4d0126b6ac99a76e17e31f9a6a5ff8fd2",
                 "shasum": ""
             },
             "require": {
@@ -155,7 +155,7 @@
                 "limited",
                 "scope"
             ],
-            "time": "2013-12-01 16:45:52"
+            "time": "2013-12-13 17:06:11"
         },
         {
             "name": "aura/project-kernel",
@@ -163,12 +163,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/auraphp/Aura.Project_Kernel.git",
-                "reference": "c3bf537ad3a763dc6cf96490e411f4be1f42fc04"
+                "reference": "0c8f768144edc37835a8398f6a0a555b3712095f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/Aura.Project_Kernel/zipball/c3bf537ad3a763dc6cf96490e411f4be1f42fc04",
-                "reference": "c3bf537ad3a763dc6cf96490e411f4be1f42fc04",
+                "url": "https://api.github.com/repos/auraphp/Aura.Project_Kernel/zipball/0c8f768144edc37835a8398f6a0a555b3712095f",
+                "reference": "0c8f768144edc37835a8398f6a0a555b3712095f",
                 "shasum": ""
             },
             "require": {
@@ -207,7 +207,7 @@
                 "kernel",
                 "project"
             ],
-            "time": "2013-12-11 20:44:55"
+            "time": "2013-12-13 17:15:04"
         },
         {
             "name": "aura/router",
