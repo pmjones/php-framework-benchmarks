@@ -32,12 +32,16 @@ After the instance comes online, issue the following shell commands to install a
     aptitude update
     aptitude dist-upgrade -y
 
+    # allow for more socket connections
+    ulimit -n 99999
+
     # apache2, php, git, siege
     aptitude install -y \
         apache2 \
         libapache2-mod-php5 \
         php5 \
         php-apc \
+        php5-dev \
         git-all \
         siege
 
@@ -79,7 +83,7 @@ Now you can run the benchmarks against a series of framework targets.
 Running the Benchmarks
 ======================
 
- At the EC2 command line, issue the following:
+At the EC2 command line, issue the following:
     
     cd /var/www
     ./bench/http_load target/all.ini
