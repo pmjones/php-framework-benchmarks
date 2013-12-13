@@ -314,12 +314,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/auraphp/Aura.Web_Kernel.git",
-                "reference": "8ced6741786c44b56d47660599b1a60269399210"
+                "reference": "ac01099b08ac914343201d862811b83106056f80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/Aura.Web_Kernel/zipball/8ced6741786c44b56d47660599b1a60269399210",
-                "reference": "8ced6741786c44b56d47660599b1a60269399210",
+                "url": "https://api.github.com/repos/auraphp/Aura.Web_Kernel/zipball/ac01099b08ac914343201d862811b83106056f80",
+                "reference": "ac01099b08ac914343201d862811b83106056f80",
                 "shasum": ""
             },
             "require": {
@@ -359,7 +359,7 @@
                 "kernel",
                 "web"
             ],
-            "time": "2013-12-11 15:54:28"
+            "time": "2013-12-13 00:20:21"
         },
         {
             "name": "monolog/monolog",

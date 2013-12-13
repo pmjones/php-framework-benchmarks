@@ -31,6 +31,16 @@ class WebKernelRouter
         $path = $this->request->url->get(PHP_URL_PATH);
         $server = $this->request->server->get();
         
+        // make an allowance for "index.php" in the path
+        $pos = strpos($path, '/index.php');
+        if ($pos !== false) {
+            // read the path after /index.php
+            $path = substr($path, $pos + 10);
+            if (! $path) {
+                $path = '/';
+            }
+        }
+        
         // log that we're routing, and try to get a route
         $this->logger->debug(__METHOD__ . " $verb $path");
         $route = $this->router->match($path, $server);
